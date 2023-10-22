@@ -7,7 +7,7 @@ public class ChatBot {
 
     public static void main(String[] args) {
         greet("ChatBot", "2023");
-
+        remindName();
     }
 
     private static void greet(String bot_name, String birthYear) {
@@ -15,5 +15,8 @@ public class ChatBot {
         System.out.println("I was created in " + birthYear + ".");
         System.out.println("Please, remind me your name.");
     }
-
+    private static void remindName() {
+        String name = scanner.nextLine();
+        System.out.println("What a great name you have, " + name + "!");
+    }
 }
