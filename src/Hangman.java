@@ -90,7 +90,7 @@ public class Hangman {
             return false;
         }
         else if (usedChars.indexOf(choice) != -1){
-            System.out.println("You've already guessed this letter");
+            System.out.println("You've already guessed this letter ");
             --lives;
             return false;
         }
