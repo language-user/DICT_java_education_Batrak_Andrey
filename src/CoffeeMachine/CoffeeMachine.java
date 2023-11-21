@@ -45,7 +45,7 @@ class Machine {
         this.milk += input.nextInt();
         System.out.println("Write how many grams of coffee beans you want to add:");
         this.beans += input.nextInt();
-        System.out.println("Write how many disposable coffee cups you want to add:");
+        System.out.println("Write how many disposable coffee cups you want to add:" );
         this.cups += input.nextInt();
     }
 
