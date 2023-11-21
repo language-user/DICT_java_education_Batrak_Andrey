@@ -13,7 +13,15 @@ public class CoffeeMachine {
                 "Coffee is ready!\n");
 
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Write how many cups of coffee you will need:");
+        int number_cup = scanner.nextInt();
+        System.out.println( number_cup + " cups of coffee you will need:");
+        System.out.println( number_cup * 200 + " ml of water");
+        System.out.println( number_cup * 50 + " ml of milk");
+        System.out.println( number_cup * 15 + " g of coffee beans");
 
     }
 }
+
 
