@@ -68,7 +68,7 @@ public class CoffeeMachine {
         Scanner input = new Scanner(System.in);
         String move;
         do {
-            System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit):" );
             move = input.next();
             switch (move) {
                 case "buy" -> {
