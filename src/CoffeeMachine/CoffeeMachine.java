@@ -1,41 +1,90 @@
 package CoffeeMachine;
-import java.util.Scanner;
+import java.util.*;
+
+class Machine {
+    private int water = 400;
+    private int milk = 540;
+    private int beans = 120;
+    private int cups = 9;
+    private int money = 550;
+
+
+    public String ingridients(int water,int milk, int beans, int money){
+        if(this.water-water>=0 && this.milk-milk>=0 && this.beans-beans>=0 && this.cups-1>=0){
+            this.water -= water;
+            this.milk -= milk;
+            this.beans -= beans;
+            this.cups -= 1;
+            this.money += money;
+            return "I have enough resources, making you a coffee!";
+        }
+        return "Sorry, not enough ingridients";
+    }
+
+    public void buyCofee(String num){
+        if (Objects.equals(num, "1")){
+            System.out.println(ingridients(250,0,16,4));
+        }
+        else if (Objects.equals(num, "2")){
+            System.out.println(ingridients(350,75,20,7));
+        }
+        else if (Objects.equals(num, "3")){
+            System.out.println(ingridients(200,100,12,6));
+        }
+    }
+
+    public void takeMoney(){
+        System.out.println("I gave you " + this.money);
+        this.money = 0;
+    }
+
+    public void setAllIngridient(Scanner input){
+        System.out.println("Write how many ml of water you want to add:");
+        this.water += input.nextInt();
+        System.out.println("Write how many ml of milk you want to add:");
+        this.milk += input.nextInt();
+        System.out.println("Write how many grams of coffee beans you want to add:");
+        this.beans += input.nextInt();
+        System.out.println("Write how many disposable coffee cups you want to add:");
+        this.cups += input.nextInt();
+    }
+
+    public String getAllIngridient(){
+        return "The coffee machine has:\n" +
+                this.water + " of water\n" +
+                this.milk + " of milk\n" +
+                this.beans + " of coffee beans\n" +
+                this.cups + " of disposable cups\n" +
+                this.money + " of money";
+    }
+}
 
 public class CoffeeMachine {
 
     public static void main(String[] args) {
-//        System.out.println("Starting to make a coffee\n" +
-//                "Grinding coffee beans\n" +
-//                "Boiling water\n" +
-//                "Mixing boiled water with crushed coffee beans\n" +
-//                "Pouring coffee into the cup\n" +
-//                "Pouring some milk into the cup\n" +
-//                "Coffee is ready!\n");
-//
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Write how many ml of water the coffee machine has:");
-        int water = scanner.nextInt();
 
-        System.out.println("Write how many ml of milk the coffee machine has:");
-        int milk = scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans the coffee machine has:");
-        int beans = scanner.nextInt();
-        System.out.println("Write how many cups of coffee you will need:");
-        int number_cup = scanner.nextInt();
-//        System.out.println( number_cup + " cups of coffee you will need:");
-//        System.out.println( number_cup * 200 + " ml of water");
-//        System.out.println( number_cup * 50 + " ml of milk");
-//        System.out.println( number_cup * 15 + " g of coffee beans");
-
-        int amount_cups = Math.min(Math.min(water / 200, milk / 50), beans / 15);
-        int N = amount_cups - number_cup;
-        if (amount_cups == number_cup) {
-            System.out.println("Yes, I can make that amount of coffee");
-        } else if (amount_cups > number_cup) {
-            System.out.println("Yes, I can make that amount of coffee (and even " + N + " more than that)");
-        } else {
-            System.out.println("No, I can make only " + amount_cups + " cups of coffee");
+        Machine person = new Machine();
+        System.out.println(person.getAllIngridient());
+        Scanner input = new Scanner(System.in);
+        String move;
+        do {
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
+            move = input.next();
+            switch (move) {
+                case "buy" -> {
+                    System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, or back:");
+                    String num = input.next();
+                    switch (num) {
+                        case "back" -> {
+                        }
+                        case "1", "2", "3" -> person.buyCofee(num);
+                    }
+                }
+                case "fill" -> person.setAllIngridient(input);
+                case "take" -> person.takeMoney();
+                case "remaining" -> System.out.println(person.getAllIngridient());
+            }
         }
-
+        while (!move.equals("exit"));
     }
 }
