@@ -26,6 +26,7 @@ public class TicTacToe {
         }
         return rows;
     }
+
     public static String[][] getCols(String[] gameState) {
         String[][] cols = new String[3][3];
         for (int i = 0; i < 3; i++) {
@@ -37,7 +38,7 @@ public class TicTacToe {
     }
 
     public static boolean isLineOf(String player, String[] line) {
-        String[] expectedLine = new String[] {player, player, player};
+        String[] expectedLine = new String[]{player, player, player};
         return Arrays.equals(line, expectedLine);
     }
 
@@ -75,11 +76,11 @@ public class TicTacToe {
     }
 
     public static String[] getRightDiagonal(String[] gameState) {
-        return new String[] {gameState[0], gameState[4], gameState[8]};
+        return new String[]{gameState[0], gameState[4], gameState[8]};
     }
 
     public static String[] getLeftDiagonal(String[] gameState) {
-        return new String[] {gameState[2], gameState[4], gameState[6]};
+        return new String[]{gameState[2], gameState[4], gameState[6]};
     }
 
     public static boolean isRightDiagonalOf(String player, String[] gameState) {
@@ -123,7 +124,7 @@ public class TicTacToe {
     }
 
     public static boolean movesAvailable(String[] gameState) {
-        return Arrays.asList(gameState).contains("_");
+        return Arrays.asList(gameState).contains(" ");
     }
 
     public static boolean hasNoWinner(String[] gameState) {
@@ -141,7 +142,7 @@ public class TicTacToe {
     }
 
     public static boolean wrongNumberOfMoves(String[] gameState) {
-        int movesDiff = count("X", gameState) - count("O", gameState) ;
+        int movesDiff = count("X", gameState) - count("O", gameState);
         return movesDiff < -1 || movesDiff > 1;
     }
 
@@ -155,13 +156,6 @@ public class TicTacToe {
 
     public static boolean isImpossible(String[] gameState) {
         return isXWins(gameState) && isOWins(gameState) || wrongNumberOfMoves(gameState);
-    }
-
-    public static String[] readGameState() {
-        System.out.print("Enter cells: ");
-        Scanner scanner = new Scanner(System.in);
-        String line = scanner.nextLine();
-        return line.strip().split("");
     }
 
     public static void printBoard(String[] gameState) {
@@ -201,37 +195,57 @@ public class TicTacToe {
         return new Coordinates(x, y);
     }
 
-    public static void makeUserMove(Coordinates move, String[] gameState) throws OccupiedCoordinateException {
-        String target = gameState[move.y * 3 + move.x];
+    public static void makeUserMove(Coordinates coordinates, String[] gameState, String player)
+            throws OccupiedCoordinateException {
+        String target = gameState[coordinates.y * 3 + coordinates.x];
 
         if (target.equals("X") || target.equals("O")) {
             throw new OccupiedCoordinateException();
         }
 
-        gameState[move.y * 3 + move.x] = "X";
+        gameState[coordinates.y * 3 + coordinates.x] = player;
     }
 
-    public static void processUserMove(String[] gameState) {
+    public static void processUserMove(String[] gameState, String player) {
         try {
             System.out.print("Enter the coordinates: ");
-            Coordinates move = readUserMove();
-            makeUserMove(move, gameState);
+            Coordinates coordinates = readUserMove();
+            makeUserMove(coordinates, gameState, player);
         } catch (OutBoundsMoveException e) {
             System.out.println("Coordinates should be from 1 to 3!");
-            processUserMove(gameState);
+            processUserMove(gameState, player);
         } catch (OccupiedCoordinateException e) {
             System.out.println("This cell is occupied! Choose another one!");
-            processUserMove(gameState);
+            processUserMove(gameState, player);
         } catch (InputMismatchException e) {
             System.out.println("You should enter numbers!");
-            processUserMove(gameState);
+            processUserMove(gameState, player);
         }
     }
 
+    public static String[] emptyBoard() {
+        String[] board = new String[9];
+        Arrays.fill(board, " ");
+        return board;
+    }
+
+    public static void play() {
+        String[] gameState = emptyBoard();
+        String gameStatus = getStatus(gameState);
+        String nextPlayer = "X";
+
+        while (gameStatus.equals("Game not finished")) {
+            printBoard(gameState);
+            processUserMove(gameState, nextPlayer);
+            gameStatus = getStatus(gameState);
+            nextPlayer = nextPlayer.equals("X") ? "O" : "X";
+        }
+
+        printBoard(gameState);
+        System.out.println(gameStatus);
+    }
+
     public static void main(String[] args) {
-        String[] gameState = readGameState();
-        printBoard(gameState);
-        processUserMove(gameState);
-        printBoard(gameState);
+        play();
     }
 }
